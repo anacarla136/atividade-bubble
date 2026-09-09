@@ -58,7 +58,7 @@ resumo <- aggregate(tempo ~ n, data = resultados, FUN = function(x) {
 })
 resumo <- do.call(data.frame, resumo)
 names(resumo) <- c("n", "tempo_medio", "tempo_desvio")
-resumo$tempo_desvio[is.na(resumo$tempo_desvio)] <- 0  # caso de 1 repeticao so
+resumo$tempo_desvio[is.na(resumo$tempo_desvio)] <- 0 # caso de 1 repeticao so
 
 print(resumo)
 write.csv(resumo, "resultados_bubblesort_resumo.txt", row.names = FALSE)
