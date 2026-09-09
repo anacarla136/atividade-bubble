@@ -25,7 +25,7 @@ resultados <- data.frame(n = integer(), rep = integer(), tempo = numeric())
 for (tam in tamanhos) {
     cat("\n== Tamanho n =", tam, "==\n")
 
-    A_original <- ler_dados(paste0("dados/", tam, ".txt"))
+    A_original <- ler_dados(paste0("dados/", format(tam, scientific = FALSE), ".txt"))
     n <- length(A_original)
     nr <- nr_por_tamanho[[as.character(tam)]]
 
