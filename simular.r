@@ -50,7 +50,7 @@ for (tam in tamanhos) {
 }
 
 # ---- 3. Salvar resultados brutos (todas as repetições) ----
-escrever(resultados, "resultados_bubblesort_bruto.txt")
+write.csv(resultados, "resultados_bubblesort_bruto.txt", row.names = FALSE)
 
 # ---- 4. Agregar: média e desvio padrão do tempo por tamanho ----
 resumo <- aggregate(tempo ~ n, data = resultados, FUN = function(x) {
@@ -61,7 +61,7 @@ names(resumo) <- c("n", "tempo_medio", "tempo_desvio")
 resumo$tempo_desvio[is.na(resumo$tempo_desvio)] <- 0  # caso de 1 repeticao so
 
 print(resumo)
-escrever(resumo, "resultados_bubblesort_resumo.txt")
+write.csv(resumo, "resultados_bubblesort_resumo.txt", row.names = FALSE)
 
 # ---- 5. Gráfico ----
 # Escala log-log: com n variando de mil a um milhao (3 ordens de grandeza),
