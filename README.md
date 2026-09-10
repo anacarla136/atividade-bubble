@@ -16,9 +16,13 @@ Implementar o algoritmo Bubblesort, medir seu tempo de execução para entradas 
 O algoritmo foi implementado seguindo fielmente o procedimento BUBBLESORT(A,n) do livro-texto:
 
 BUBBLESORT(A,n)
+
 1 for i = 1 to n - 1
+
 2 for j = n downto i + 1
+
 3 if A[j] < A[j-1]
+
 4 trocar A[j] com A[j-1]
 
 
@@ -77,6 +81,7 @@ Vale observar que, em linguagens compiladas como C++, C# e Java (escolhidas por 
 No terminal, dentro da pasta do projeto, com o R instalado:
 
 R.exe --no-save
+
 source("simular.R")
 
 Os resultados são salvos em `resultados_bubblesort_bruto.txt`, `resultados_bubblesort_resumo.txt` e `grafico_bubblesort.png`.
