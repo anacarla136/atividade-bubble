@@ -7,16 +7,15 @@ source("escrever.r")
 library(ggplot2)
 
 # ---- 1. Configuração ----
-tamanhos <- c(1000, 10000, 100000, 1000000)
+tamanhos <- c(1000, 10000, 100000)
 
 # Número de repetições por tamanho. Reduzido para os tamanhos maiores porque
 # bubblesort é O(n^2): rodar n = 1.000.000 trinta vezes pode ser inviável.
 # Ajuste esses valores conforme o tempo disponível.
 nr_por_tamanho <- c(
-    "1000"    = 30,
-    "10000"   = 30,
-    "100000"  = 10,
-    "1000000" = 3
+    "1000" = 30,
+    "10000" = 10,
+    "100000" = 1
 )
 
 # ---- 2. Loop de medição ----
@@ -27,7 +26,7 @@ for (tam in tamanhos) {
 
     A_original <- ler_dados(paste0("dados/", format(tam, scientific = FALSE), ".txt"))
     n <- length(A_original)
-    nr <- nr_por_tamanho[[as.character(tam)]]
+    nr <- nr_por_tamanho[[format(tam, scientific = FALSE, trim = TRUE)]]
 
     for (r in 1:nr) {
         A <- preparar(A_original)
