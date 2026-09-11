@@ -58,11 +58,17 @@ O número de repetições foi reduzido para tamanhos maiores devido ao crescimen
 
 ## Resultados
 
+|## Resultados
+
 | Tamanho (n) | Tempo médio (s) | Desvio padrão (s) |
 |---|---|---|
-| 1.000 | 0,184 | 0,067 |
-| 10.000 | 16,897 | 2,895 |
-| 100.000 | 1.045,020 | — (1 repetição) |
+| 1.000 | 0,152 | 0,041 |
+| 10.000 | 11,515 | 2,375 |
+| 100.000 | 1.135,640 | — (1 repetição) |
+
+O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em escala log-log. Os pontos azuis são medições reais; o ponto vermelho é uma extrapolação matemática (ver seção abaixo).
+
+![Gráfico de desempenho](grafico_bubblesort.png)
 
 O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em escala log-log, onde a reta praticamente linear confirma visualmente o crescimento quadrático (O(n²)) do algoritmo.
 
@@ -70,9 +76,11 @@ O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em esca
 
 ## Sobre o caso de 1.000.000 de elementos
 
-O arquivo `1000000.txt`, fornecido pelo professor, não foi executado até o fim. Com base na taxa de crescimento observada entre os tamanhos testados — o tempo aumentou aproximadamente 91x ao passar de 1.000 para 10.000 elementos, e cerca de 62x ao passar de 10.000 para 100.000, ambos próximos do fator 100x esperado teoricamente para um algoritmo O(n²) — estima-se que uma única execução com 1.000.000 de elementos levaria dezenas de horas, tornando-a inviável no prazo da atividade.
+O arquivo `1000000.txt`, fornecido pelo professor, não foi executado até o fim. Com base na taxa de crescimento observada entre os tamanhos testados — o tempo aumentou aproximadamente 76x ao passar de 1.000 para 10.000 elementos, e cerca de 99x ao passar de 10.000 para 100.000, ambos próximos do fator 100x esperado teoricamente para um algoritmo O(n²) — foi feita uma extrapolação matemática (regressão linear em escala log-log, com `lm()` em R) usando os três tempos reais medidos.
 
-Essa limitação é, na prática, uma confirmação experimental da própria complexidade de pior caso do Bubblesort, O(n²): à medida que o tamanho da entrada cresce, o tempo de execução cresce proporcionalmente ao quadrado desse tamanho, tornando o algoritmo impraticável para entradas muito grandes — o que responde diretamente à questão (d) da página 32 do livro-texto.
+A estimativa resultante é de aproximadamente **93.939 segundos (≈ 26,1 horas)** para uma única execução com 1.000.000 de elementos, tornando-a inviável no prazo da atividade. Esse ponto extrapolado está destacado em vermelho no gráfico, ao lado dos pontos medidos em azul.
+
+Essa limitação é, na prática, uma confirmação experimental da própria complexidade de pior caso do Bubblesort, O(n²): à medida que o tamanho da entrada cresce, o tempo de execução cresce proporcionalmente ao quadrado desse tamanho — o que responde diretamente à questão (d) da página 32 do livro-texto.
 
 Vale observar que, em linguagens compiladas como C++, C# e Java (escolhidas por outros grupos da turma), espera-se que a execução com 1.000.000 de elementos seja significativamente mais rápida, já que essas linguagens não dependem de interpretação em tempo de execução como o R.
 
