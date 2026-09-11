@@ -62,25 +62,48 @@ resumo$tempo_desvio[is.na(resumo$tempo_desvio)] <- 0 # caso de 1 repeticao so
 print(resumo)
 write.csv(resumo, "resultados_bubblesort_resumo.txt", row.names = FALSE)
 
+# ---- 4.5. Extrapolação para 1.000.000 (não executado por inviabilidade de tempo) ----
+modelo <- lm(log10(tempo_medio) ~ log10(n), data = resumo)
+log_tempo_previsto <- predict(modelo, newdata = data.frame(n = 1000000))
+tempo_previsto_seg <- 10^log_tempo_previsto
+tempo_previsto_horas <- tempo_previsto_seg / 3600
+
+cat("\nEstimativa para n = 1.000.000 (extrapolação, não executado):\n")
+cat("  Tempo previsto:", round(tempo_previsto_seg, 0), "segundos\n")
+cat("  Equivalente a: ", round(tempo_previsto_horas, 1), "horas\n")
+
+extrapolado <- data.frame(
+  n = 1000000,
+  tempo_medio = tempo_previsto_seg,
+  tempo_desvio = 0,
+  tipo = "Extrapolado"
+)
+resumo$tipo <- "Medido"
+resumo_completo <- rbind(resumo, extrapolado)
+
 # ---- 5. Gráfico ----
 # Escala log-log: com n variando de mil a um milhao (3 ordens de grandeza),
 # o log-log deixa visivel que o crescimento e quadratico (reta de inclinacao ~2).
-grafico <- ggplot(resumo, aes(x = n, y = tempo_medio)) +
-    geom_line(color = "steelblue", linewidth = 1) +
-    geom_point(color = "steelblue", size = 3) +
-    geom_errorbar(
-        aes(ymin = tempo_medio - tempo_desvio, ymax = tempo_medio + tempo_desvio),
-        width = 0.05, color = "steelblue", alpha = 0.5
-    ) +
-    scale_x_log10() +
-    scale_y_log10() +
-    labs(
-        title = "Tempo de execucao do Bubblesort por tamanho de entrada",
-        subtitle = paste0("Media de repeticoes por tamanho, escala log-log"),
-        x = "Tamanho da entrada (n) - escala log",
-        y = "Tempo medio (segundos) - escala log"
-    ) +
-    theme_minimal()
+grafico <- ggplot(resumo_completo, aes(x = n, y = tempo_medio)) +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(aes(color = tipo, shape = tipo), size = 4) +
+  geom_errorbar(
+    data = subset(resumo_completo, tipo == "Medido"),
+    aes(ymin = tempo_medio - tempo_desvio, ymax = tempo_medio + tempo_desvio),
+    width = 0.05, color = "steelblue", alpha = 0.5
+  ) +
+  scale_x_log10() +
+  scale_y_log10() +
+  scale_color_manual(values = c("Medido" = "steelblue", "Extrapolado" = "firebrick")) +
+  labs(
+    title = "Tempo de execucao do Bubblesort por tamanho de entrada",
+    subtitle = "Pontos medidos (azul) + extrapolacao matematica para 1M (vermelho)",
+    x = "Tamanho da entrada (n) - escala log",
+    y = "Tempo medio (segundos) - escala log",
+    color = "Tipo de dado",
+    shape = "Tipo de dado"
+  ) +
+  theme_minimal()
 
 print(grafico)
 
