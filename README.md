@@ -66,10 +66,6 @@ O número de repetições foi reduzido para tamanhos maiores devido ao crescimen
 | 10.000 | 11,515 | 2,375 |
 | 100.000 | 1.135,640 | — (1 repetição) |
 
-O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em escala log-log. Os pontos azuis são medições reais; o ponto vermelho é uma extrapolação matemática (ver seção abaixo).
-
-![Gráfico de desempenho](grafico_bubblesort.png)
-
 O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em escala log-log, onde a reta praticamente linear confirma visualmente o crescimento quadrático (O(n²)) do algoritmo.
 
 ![Gráfico de desempenho](grafico_bubblesort.png)
