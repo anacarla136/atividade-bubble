@@ -4,8 +4,8 @@ Implementação do algoritmo Bubblesort em R, com medição do tempo de execuç�
 
 ## Integrantes
 
-- Luyza
-- [nome da colega]
+- Ana Carla
+- Brunna Luyza
 
 ## Objetivo
 
