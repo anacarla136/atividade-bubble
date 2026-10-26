@@ -1,91 +1,119 @@
 # atividade-bubble
 
-Implementação do algoritmo Bubble Sort em R, com medição de desempenho para diferentes tamanhos de entrada, seguindo o pseudocódigo apresentado na página 32 do livro *Algoritmos: Teoria e Prática* (seção 2-2, Corretude do bubblesort).
+Implementação do algoritmo Bubblesort em R, com medição do tempo de execução para entradas de 1.000, 10.000 e 100.000 elementos e estimativa para 1.000.000 de elementos. A implementação segue o pseudocódigo da página 32 do livro *Algoritmos: Teoria e Prática*, problema 2-2, Corretude do bubblesort.
 
 ## Integrantes
 
-- Ana Carla
-- Brunna Luyza
+- Luyza
+- [nome da colega]
 
 ## Objetivo
 
-Implementar o algoritmo Bubblesort, medir seu tempo de execução para entradas de diferentes tamanhos e demonstrar experimentalmente sua complexidade de tempo O(n²), comparando os resultados obtidos com a análise teórica.
+Implementar o Bubblesort, coletar o tempo de execução com 10 repetições para cada conjunto de dados fornecido pelo professor e analisar como o tempo cresce conforme o tamanho da entrada aumenta, comparando o resultado com a complexidade teórica do algoritmo.
 
 ## Pseudocódigo de referência
 
-O algoritmo foi implementado seguindo fielmente o procedimento BUBBLESORT(A,n) do livro-texto:
+```
+BUBBLESORT(A, n)
+1  for i = 1 to n - 1
+2      for j = n downto i + 1
+3          if A[j] < A[j - 1]
+4              trocar A[j] com A[j - 1]
+```
 
-BUBBLESORT(A,n)
+O laço interno percorre o vetor de trás para frente, e a cada rodada completa o menor elemento restante vai parar na sua posição final, à esquerda. Depois de n - 1 rodadas o vetor está em ordem crescente.
 
-1 for i = 1 to n - 1
+## Linguagem
 
-2 for j = n downto i + 1
-
-3 if A[j] < A[j-1]
-
-4 trocar A[j] com A[j-1]
-
-
-O laço interno percorre o vetor de trás para frente, "empurrando" os menores elementos em direção ao início a cada rodada, até que o vetor fique ordenado de forma crescente.
-
-## Linguagem utilizada
-
-R (versão 4.6.1)
+R, versão 4.6.1, executado no VS Code.
 
 ## Estrutura do projeto
 
-- `dados/` — arquivos de entrada fornecidos pelo professor (1000.txt, 10000.txt, 100000.txt, 1000000.txt), um número por linha
-- `ler.R` — leitura dos arquivos de dados e conversão para vetor numérico
-- `bubblesort.R` — implementação do algoritmo, seguindo o pseudocódigo da página 32
-- `verificar.R` — confirma se o vetor resultante está corretamente ordenado
-- `preparar.R` — garante que cada repetição de medição use uma cópia intacta do vetor original (evitando medir a ordenação de um vetor já ordenado)
-- `escrever.R` — grava vetores/resultados em arquivo
-- `simular.R` — script principal: executa o bubblesort múltiplas vezes para cada tamanho de entrada, mede o tempo com `system.time()`, agrega os resultados (média e desvio padrão) e gera o gráfico comparativo
+- `dados/`: arquivos de entrada do professor, `1000.txt`, `10000.txt`, `100000.txt` e `1000000.txt`, com um número por linha
+- `ler.r`: lê um arquivo de dados e devolve um vetor numérico
+- `bubblesort.r`: implementação do algoritmo, igual ao pseudocódigo do livro
+- `verificar.r`: confere se o vetor ficou em ordem crescente
+- `preparar.r`: devolve uma cópia do vetor original bagunçado antes de cada repetição
+- `escrever.r`: grava dados em arquivo
+- `simular.r`: script principal, que roda as repetições, mede o tempo, calcula a curva e gera tabelas e gráfico
 
 ## Metodologia
 
-Para cada tamanho de entrada, o vetor original foi lido uma única vez e restaurado antes de cada repetição, garantindo que toda medição partisse do mesmo estado inicial desordenado. O tempo de execução foi medido isoladamente ao redor da chamada do `bubblesort()`, e a corretude da ordenação foi verificada após cada execução.
+Para cada tamanho, o arquivo é lido uma única vez. Antes de cada repetição o vetor volta ao estado original bagunçado, porque ordenar um vetor que já está ordenado daria um tempo artificialmente baixo. O tempo de cada repetição é medido com `system.time()`, considerando apenas a chamada do `bubblesort`, e depois de cada ordenação a função `verificar` confere o resultado. Se alguma ordenação falhar, o programa para na hora.
 
-Número de repetições por tamanho:
-
-| Tamanho (n) | Repetições |
-|---|---|
-| 1.000 | 30 |
-| 10.000 | 10 |
-| 100.000 | 1 |
-
-O número de repetições foi reduzido para tamanhos maiores devido ao crescimento quadrático do tempo de execução, que tornaria repetições numerosas inviáveis dentro do prazo disponível.
+Foram feitas 10 repetições para cada um dos tamanhos 1.000, 10.000 e 100.000. Os resultados brutos são salvos a cada repetição concluída em `resultados_bubblesort_bruto.txt`. O script completo levou cerca de 150 minutos, quase todos gastos nas repetições de 100.000.
 
 ## Resultados
 
-|## Resultados
+Tempos em segundos, medidos em cada repetição.
 
-| Tamanho (n) | Tempo médio (s) | Desvio padrão (s) |
-|---|---|---|
-| 1.000 | 0,152 | 0,041 |
-| 10.000 | 11,515 | 2,375 |
-| 100.000 | 1.135,640 | — (1 repetição) |
+| Repetição | 1.000 | 10.000 | 100.000 | 1.000.000 |
+|---|---|---|---|---|
+| 1 | 0,11 | 8,61 | 901,17 | |
+| 2 | 0,15 | 8,61 | 915,96 | |
+| 3 | 0,13 | 8,49 | 878,20 | |
+| 4 | 0,11 | 9,14 | 879,98 | |
+| 5 | 0,11 | 8,81 | 884,75 | |
+| 6 | 0,11 | 8,58 | 907,34 | |
+| 7 | 0,16 | 8,50 | 872,33 | |
+| 8 | 0,17 | 8,58 | 882,31 | |
+| 9 | 0,14 | 8,65 | 885,83 | |
+| 10 | 0,13 | 8,75 | 876,66 | |
+| Média | 0,132 | 8,672 | 888,453 | 89.124,36 estimado |
+| Desvio padrão | 0,0225 | 0,1921 | 14,5654 | |
 
-O gráfico abaixo (`grafico_bubblesort.png`) apresenta os tempos médios em escala log-log, onde a reta praticamente linear confirma visualmente o crescimento quadrático (O(n²)) do algoritmo.
+Do tamanho 1.000 para 10.000 o tempo médio cresceu cerca de 66 vezes. De 10.000 para 100.000 cresceu cerca de 102 vezes. Cada vez que a entrada fica 10 vezes maior, o tempo fica da ordem de 100 vezes maior, que é o comportamento esperado de um algoritmo quadrático.
+
+## Gráfico
 
 ![Gráfico de desempenho](grafico_bubblesort.png)
 
-## Sobre o caso de 1.000.000 de elementos
+O gráfico está em escala normal e mostra os três pontos medidos com a linha de tendência polinomial de grau 2 ajustada sobre eles:
 
-O arquivo `1000000.txt`, fornecido pelo professor, não foi executado até o fim. Com base na taxa de crescimento observada entre os tamanhos testados — o tempo aumentou aproximadamente 76x ao passar de 1.000 para 10.000 elementos, e cerca de 99x ao passar de 10.000 para 100.000, ambos próximos do fator 100x esperado teoricamente para um algoritmo O(n²) — foi feita uma extrapolação matemática (regressão linear em escala log-log, com `lm()` em R) usando os três tempos reais medidos.
+```
+f(x) = 8,916e-08 x² - 3,183e-05 x + 0,075
+R² = 1
+```
 
-A estimativa resultante é de aproximadamente **93.939 segundos (≈ 26,1 horas)** para uma única execução com 1.000.000 de elementos, tornando-a inviável no prazo da atividade. Esse ponto extrapolado está destacado em vermelho no gráfico, ao lado dos pontos medidos em azul.
+O R² igual a 1 acontece porque há apenas três pontos medidos e a parábola tem três coeficientes, então ela passa exatamente por todos os pontos. Esse valor não prova sozinho que o algoritmo é quadrático. O que sustenta isso é o crescimento de cerca de 100 vezes no tempo a cada aumento de 10 vezes no tamanho, junto com a análise teórica.
 
-Essa limitação é, na prática, uma confirmação experimental da própria complexidade de pior caso do Bubblesort, O(n²): à medida que o tamanho da entrada cresce, o tempo de execução cresce proporcionalmente ao quadrado desse tamanho — o que responde diretamente à questão (d) da página 32 do livro-texto.
+## Estimativa para 1.000.000 de elementos
 
-Vale observar que, em linguagens compiladas como C++, C# e Java (escolhidas por outros grupos da turma), espera-se que a execução com 1.000.000 de elementos seja significativamente mais rápida, já que essas linguagens não dependem de interpretação em tempo de execução como o R.
+O arquivo `1000000.txt` não foi executado, porque uma única repetição levaria mais de um dia, e 10 repetições seriam inviáveis. O professor foi consultado e aceitou a estimativa nesse caso. O valor foi obtido aplicando a fórmula da curva a n = 1.000.000.
+
+| n | Segundos | Minutos | Horas |
+|---|---|---|---|
+| 1.000 | 0,132 | 0,0022 | 0,00004 |
+| 10.000 | 8,672 | 0,1445 | 0,0024 |
+| 100.000 | 888,453 | 14,8076 | 0,2468 |
+| 1.000.000 | 89.124,363 | 1.485,4061 | 24,7568 |
+
+A estimativa depende dos três pontos medidos, então um conjunto diferente de medições, em outra máquina ou em outro momento, daria um valor um pouco diferente.
+
+## Análise do tempo de execução
+
+O laço interno do pseudocódigo sempre percorre todas as posições restantes, então o número de comparações é n(n - 1)/2 independentemente do conteúdo do vetor. O tempo cresce com n², ou seja, o pior caso é Θ(n²), o mesmo da ordenação por inserção, como pergunta o item d do problema 2-2. Os tempos medidos confirmam isso na prática.
+
+Linguagens compiladas, como C++, C# e Java, tendem a executar esse mesmo algoritmo bem mais rápido que o R, que é interpretado. Por isso era esperado que a execução com 1.000.000 de elementos fosse inviável em R no prazo da atividade.
 
 ## Como executar
 
-No terminal, dentro da pasta do projeto, com o R instalado:
+No terminal do VS Code, dentro da pasta do projeto:
 
+```
 R.exe --no-save
+```
 
-source("simular.R")
+Depois, dentro do R:
 
-Os resultados são salvos em `resultados_bubblesort_bruto.txt`, `resultados_bubblesort_resumo.txt` e `grafico_bubblesort.png`.
+```r
+source("simular.r")
+```
+
+Arquivos gerados:
+
+- `resultados_bubblesort_bruto.txt`: todos os tempos, repetição por repetição
+- `resultados_bubblesort_resumo.txt`: média e desvio padrão por tamanho
+- `tabela_final_com_estimativa.csv`: tempos em segundos, minutos e horas, com a linha do milhão estimada
+- `tabela_repeticoes.csv`: quadro de repetições por tamanho
+- `grafico_bubblesort.png`: gráfico com a curva polinomial
